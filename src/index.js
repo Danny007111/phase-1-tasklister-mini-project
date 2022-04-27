@@ -1,71 +1,43 @@
-
-
-
 document.addEventListener("DOMContentLoaded", () => {
-  // initialize taskList class
-  const taskList = new TaskList();
-  //grab all the necessary DOM elements
 
-  //form and relevant input fields
   const newTaskForm = document.getElementById("create-task-form");
   const newTaskDescription = document.getElementById("new-task-description");
   // const newTaskPriority = document.getElementById("new-task-priority");
-
-  //ul where new tasks will live on the DOM
-  const taskUl = document.getElementById("tasks");
-
-  const renderApp = () => (taskUl.innerHTML = taskList.renderTasks());
-  //attach event listeners
-
-  newTaskForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    taskList.createNewTask(newTaskDescription.value);
-    // reset form
-    e.target.reset();
-    renderApp();
-  });
-
-  taskUl.addEventListener("click", (e) => {
-    if (e.target.nodeName === "BUTTON") {
-      taskList.deleteTask(e.target.dataset.description);
-      renderApp();
-    }
-  });
-});
+  const ul = document.getElementById("tasks");
 
 
-class Task {
-  constructor(description) {
-    this.description = description;
-  }
+function inputLength(){
+  return newTaskDescription.value.length;
+};
 
-  render() {
-    return `
-      <li>
-        ${this.description}
-        <button data-description="${this.description}">X</button>
-      </li>
-      `;
-  }
+function createListElement(){
+  let li = document.createElement("li");
+  let buttn = document.createElement("button");
+  buttn.setAttribute("id", `${newTaskDescription.value}`);
+  buttn.innerHTML = "X";
+  li.appendChild(document.createTextNode(newTaskDescription.value + " "));
+  li.appendChild(buttn);
+  ul.appendChild(li);
+
+  let sel = document.querySelector("#" + `${newTaskDescription.value}`)
+
+  sel.addEventListener("click", function(){
+    ul.removeChild(li);
+  })
+
+  newTaskDescription.value = "";
 }
 
-
-class TaskList {
-  constructor() {
-    this.tasks = [];
+newTaskForm.addEventListener("submit", function(e){
+  e.preventDefault();
+  if (inputLength() > 0 ){
+    createListElement();
+  }else{
+    console.log("Stop!")
   }
+  });
 
-  createNewTask(description) {
-    const newTask = new Task(description);
-    this.tasks.push(newTask);
-  }
 
-  renderTasks() {
-    return this.tasks.map((task) => task.render()).join("");
-  }
 
-  deleteTask(description) {
-    this.tasks = this.tasks.filter((task) => task.description !== description);
-  }
-}
-
+  
+})
