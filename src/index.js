@@ -13,13 +13,15 @@ function inputLength(){
 function createListElement(){
   let li = document.createElement("li");
   let buttn = document.createElement("button");
-  buttn.setAttribute("id", `${newTaskDescription.value}`);
+
+  buttn.setAttribute("id", `${newTaskDescription.value.split(' ').join('')}`);
+  
   buttn.innerHTML = "X";
   li.appendChild(document.createTextNode(newTaskDescription.value + " "));
   li.appendChild(buttn);
   ul.appendChild(li);
 
-  let sel = document.querySelector("#" + `${newTaskDescription.value}`)
+  let sel = document.querySelector("#" + `${newTaskDescription.value.split(' ').join('')}`)
 
   sel.addEventListener("click", function(){
     ul.removeChild(li);
